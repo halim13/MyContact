@@ -1,66 +1,98 @@
-import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { Button, Modal, Text, TextInput } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateVisible } from '../slices/modal'
-import { updateContactItem } from '../slices/contactItem'
+import { clearContactItem, updateContactItem } from '../slices/contactItem'
+import { createContact, updateContact } from '../slices/contacts'
 
 const ModalContact = () => {
     const dispatch = useDispatch()
-    const [text, setText] = useState('')
 
     const { visible } = useSelector(({ modal }) => modal)
-    // const { firstName, lastName, age, photo } = useSelector(({ contactItem }) => contactItem)
-    const contact = useSelector(({ contactItem }) => contactItem)
+    const { firstName, lastName, age, photo, id } = useSelector(({ contactItem }) => contactItem.form)
 
     const hideModal = () => dispatch(updateVisible(false))
-    const setContactItem = (key, value) => dispatch(updateContactItem(key)(value))
+    const setContactItem = key => value => dispatch(updateContactItem({
+        firstName,
+        lastName,
+        age,
+        photo,
+        [key]: value,
+    }))
+    const update = (item) => dispatch(clearContactItem(item))
+    const clearContact = () => dispatch(updateContact())
+    const saveContact = (item) => dispatch(createContact(item))
 
     const saveModal = () => {
+        if (!!firstName && !!lastName && !!age) {
+            if (id) {
+                update({
+                    id,
+                    firstName,
+                    lastName,
+                    age,
+                    photo,
+                })
+            } else {
+                saveContact({
+                    firstName,
+                    lastName,
+                    age,
+                    photo,
+                })
+            }
+        }
+        clearContact()
         hideModal()
     }
 
+    const clearModal = () => clearContact()
+
     const containerStyle = { backgroundColor: 'white', padding: 20, margin: 16, borderRadius: 20 }
 
-    console.log({
-        contact
-    })
+    console.log({ firstName, lastName, age, photo })
     return (
         <Modal
             visible={visible}
             onDismiss={hideModal}
             contentContainerStyle={containerStyle}
-            dismissable={false}
         >
             <Text style={{
                 textAlign: 'center',
                 fontWeight: 'bold',
                 fontSize: 20,
                 marginBottom: 16,
-            }}>Add Contact</Text>
+            }}>{`${id ? 'Edit' : 'Add'}`} Contact</Text>
             <TextInput
                 label='First Name'
-                // value={firstName}
+                value={firstName}
                 mode='outlined'
-                onChangeText={val => setContactItem('firstName', val)}
+                onChangeText={setContactItem('firstName')}
                 style={{ marginBottom: 16 }}
             />
             <TextInput
                 label='Last Name'
-                value={text}
+                value={lastName}
                 mode='outlined'
-                onChangeText={text => setText(text)}
+                onChangeText={setContactItem('lastName')}
                 style={{ marginBottom: 16 }}
             />
             <TextInput
                 label='Age'
-                value={text}
+                value={age?.toString()}
                 mode='outlined'
                 keyboardType='number-pad'
-                onChangeText={text => setText(text)}
+                onChangeText={setContactItem('age')}
                 style={{ marginBottom: 16 }}
             />
-            <Button mode='contained' onPress={saveModal}>Save</Button>
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }}>
+                <Button mode='contained' onPress={() => saveModal()} disabled={!firstName || !lastName || !age}>Save</Button>
+                <Button mode='contained' buttonColor='#f11000' onPress={() => clearModal()}>Clear</Button>
+            </View>
         </Modal>
     )
 }

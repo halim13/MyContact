@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    firstName: '',
-    lastName: '',
-    age: '',
-    photo: '',
+    form: {
+        id: null,
+        firstName: '',
+        lastName: '',
+        age: '',
+        photo: '',
+    }
 }
 
 const contactItemSlice = createSlice({
@@ -12,15 +15,17 @@ const contactItemSlice = createSlice({
     initialState,
     reducers: {
         updateContactItem: (state, action) => {
-            console.log({
-                state,
-                action
-            })
-            // state[action.payload.key] = action.payload.value
+            state.form = action.payload
+        },
+        clearContactItem: (state, action) => {
+            state.form = initialState.form
+        },
+        setContactItem: (state, action) => {
+            state.form = action.payload
         }
     }
 })
 
-export const { updateContactItem } = contactItemSlice.actions
+export const { updateContactItem, clearContactItem, setContactItem } = contactItemSlice.actions
 
 export default contactItemSlice.reducer

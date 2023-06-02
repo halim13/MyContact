@@ -6,6 +6,8 @@ import { createContact, deleteContact, retrieveContactById, retrieveContacts, up
 import ContactsList from '../../components/ContactsList'
 import Fab from '../../components/Fab'
 import ModalContact from '../../components/ModalContact'
+import SnackbarMessage from '../../components/SnackbarMessage'
+import Header from '../../components/Header'
 
 const index = () => {
     const { item, status, errorMessage, type } = useSelector(({ contacts }) => contacts)
@@ -15,7 +17,7 @@ const index = () => {
     const initFetch = useCallback(() => {
         dispatch(retrieveContacts())
         // dispatch(retrieveContactById('93ad6070-c92b-11e8-b02f-cbfa15db428b'))
-        // dispatch(deleteContact('93ad6070-c92b-11e8-b02f-cbfa15db428b'))
+        // dispatch(deleteContact('128fab60-00da-11ee-baa9-a74c99363e66'))
         // dispatch(createContact({ 
         //         "firstName": "ujang",
         //         "lastName": "udin",
@@ -43,9 +45,11 @@ const index = () => {
 
     return (
         <View>
+            <Header />
             <ContactsList />
-            <Fab />
+            <SnackbarMessage />
             <Portal>
+                <Fab />
                 <ModalContact />
             </Portal>
         </View>

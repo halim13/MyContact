@@ -53,8 +53,13 @@ export const deleteContact = createAsyncThunk(
 )
 
 const contactSlice = createSlice({
-    name: 'contact',
+    name: 'contact/setErrorMessage',
     initialState,
+    reducers: {
+        setErrorMessage: (state, action) => {
+            state.errorMessage = action.payload
+        }
+    },
     extraReducers: builder => {
         builder
             // create
@@ -70,7 +75,7 @@ const contactSlice = createSlice({
             })
             .addCase(createContact.rejected, (state, action) => {
                 state.status = status.error
-                state.errorMessage = action.error.message
+                state.errorMessage = 'Error Create Contact: ' + action.error.message
             })
             // get list
             .addCase(retrieveContacts.pending, (state, action) => {
@@ -85,7 +90,7 @@ const contactSlice = createSlice({
             })
             .addCase(retrieveContacts.rejected, (state, action) => {
                 state.status = status.error
-                state.errorMessage = action.error.message
+                state.errorMessage = 'Error Get list: ' + action.error.message
             })
             // get by id
             .addCase(retrieveContactById.pending, (state, action) => {
@@ -100,7 +105,7 @@ const contactSlice = createSlice({
             })
             .addCase(retrieveContactById.rejected, (state, action) => {
                 state.status = status.error
-                state.errorMessage = action.error.message
+                state.errorMessage = 'Error Get by Id: ' + action.error.message
             })
             // update
             .addCase(updateContact.pending, (state, action) => {
@@ -119,7 +124,7 @@ const contactSlice = createSlice({
             })
             .addCase(updateContact.rejected, (state, action) => {
                 state.status = status.error
-                state.errorMessage = action.error.message
+                state.errorMessage = 'Error Update: ' + action.error.message
             })
             // delete
             .addCase(deleteContact.pending, (state, action) => {
@@ -136,7 +141,7 @@ const contactSlice = createSlice({
             })
             .addCase(deleteContact.rejected, (state, action) => {
                 state.status = status.error
-                state.errorMessage = action.error.message
+                state.errorMessage = 'Error Delete: ' + action.error.message
             })
             .addDefaultCase((state, action) => {
                 console.log({
@@ -147,5 +152,7 @@ const contactSlice = createSlice({
 })
 
 const { reducer } = contactSlice
+
+export const { setErrorMessage } = contactSlice.actions
 
 export default reducer

@@ -3,15 +3,19 @@ import React from 'react'
 import { FAB } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateVisible } from '../slices/modal'
+import { clearContactItem } from '../slices/contactItem'
 
 const Fab = () => {
     const { status } = useSelector(({ contacts }) => contacts)
     const { visible } = useSelector(({ modal }) => modal)
     const dispatch = useDispatch()
 
-    const addContact = () => dispatch(updateVisible(true))
-    
-    if(status === 'ready') {
+    const addContact = () => {
+        dispatch(updateVisible(true))
+        dispatch(clearContactItem())
+    }
+
+    if (status !== 'idle' && status !== 'progress') {
         return (
             <FAB
                 icon='plus'
