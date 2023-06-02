@@ -44,12 +44,12 @@ const index = () => {
     }, [initFetch])
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Header />
             <ContactsList />
+            <Fab />
             <SnackbarMessage />
             <Portal>
-                <Fab />
                 <ModalContact />
             </Portal>
         </View>
