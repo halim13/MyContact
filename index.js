@@ -6,6 +6,16 @@ import { Provider } from 'react-redux'
 import store from './src/app-redux/store/configureStore'
 import colors from './src/constants/colors'
 
+if (!__DEV__) {
+    [
+        'log',
+    ].forEach(methodName => {
+        console[methodName] = () => {
+            /* noop */
+        };
+    });
+}
+
 const theme = {
     ...DefaultTheme,
     colors: {
