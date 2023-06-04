@@ -14,21 +14,21 @@ const ModalContact = () => {
 
     const hideModal = () => dispatch(updateVisible(false))
     const setContactItem = key => value => dispatch(updateContactItem({
+        id,
         firstName,
         lastName,
         age,
         photo,
         [key]: value,
     }))
-    const update = (item) => dispatch(clearContactItem(item))
-    const clearContact = () => dispatch(updateContact())
+    const update = (id, data) => dispatch(updateContact({ id, data }))
+    const clearContact = () => dispatch(clearContactItem())
     const saveContact = (item) => dispatch(createContact(item))
 
     const saveModal = () => {
         if (!!firstName && !!lastName && !!age) {
             if (id) {
-                update({
-                    id,
+                update(id, {
                     firstName,
                     lastName,
                     age,
@@ -51,7 +51,6 @@ const ModalContact = () => {
 
     const containerStyle = { backgroundColor: 'white', padding: 20, margin: 16, borderRadius: 20 }
 
-    console.log({ firstName, lastName, age, photo })
     return (
         <Modal
             visible={visible}

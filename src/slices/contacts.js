@@ -62,8 +62,11 @@ const contactSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            // create
             .addCase(createContact.pending, (state, action) => {
+
+                console.log({
+                    action: action.meta.arg
+                })
                 state.status = status.progress
                 state.errorMessage = initialState.errorMessage
                 state.item = initialState.item
@@ -77,7 +80,6 @@ const contactSlice = createSlice({
                 state.status = status.error
                 state.errorMessage = 'Error Create Contact: ' + action.error.message
             })
-            // get list
             .addCase(retrieveContacts.pending, (state, action) => {
                 state.status = status.progress
                 state.errorMessage = initialState.errorMessage
@@ -92,7 +94,6 @@ const contactSlice = createSlice({
                 state.status = status.error
                 state.errorMessage = 'Error Get list: ' + action.error.message
             })
-            // get by id
             .addCase(retrieveContactById.pending, (state, action) => {
                 state.status = status.progress
                 state.errorMessage = initialState.errorMessage
@@ -107,7 +108,6 @@ const contactSlice = createSlice({
                 state.status = status.error
                 state.errorMessage = 'Error Get by Id: ' + action.error.message
             })
-            // update
             .addCase(updateContact.pending, (state, action) => {
                 state.status = status.progress
                 state.errorMessage = initialState.errorMessage
@@ -126,7 +126,6 @@ const contactSlice = createSlice({
                 state.status = status.error
                 state.errorMessage = 'Error Update: ' + action.error.message
             })
-            // delete
             .addCase(deleteContact.pending, (state, action) => {
                 state.status = status.progress
                 state.errorMessage = initialState.errorMessage
@@ -135,18 +134,12 @@ const contactSlice = createSlice({
             })
             .addCase(deleteContact.fulfilled, (state, action) => {
                 state.status = status.ready
-                console.log({ action })
                 let index = state.findIndex(({ id }) => id === action.payload.data.id)
                 state.splice(index, 1)
             })
             .addCase(deleteContact.rejected, (state, action) => {
                 state.status = status.error
                 state.errorMessage = 'Error Delete: ' + action.error.message
-            })
-            .addDefaultCase((state, action) => {
-                console.log({
-                    default: action
-                })
             })
     }
 })

@@ -75,7 +75,7 @@ const ContactsList = () => {
         )
     }
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <FlatList
                 data={data}
                 refreshControl={<RefreshControl refreshing={status === 'progress'} onRefresh={refreshData} />}

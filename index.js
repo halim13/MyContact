@@ -8,7 +8,11 @@ import colors from './src/constants/colors'
 
 if (!__DEV__) {
     [
+        'debug',
+        'error',
+        'info',
         'log',
+        'warn',
     ].forEach(methodName => {
         console[methodName] = () => {
             /* noop */
